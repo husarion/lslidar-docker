@@ -1,0 +1,18 @@
+x-net-config: &net-config
+  network_mode: host
+  ipc: host
+  env_file: ./config/net.env
+
+services:
+  lsc16-lidar:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: husarion/lslidar:humble
+    <<: *net-config
+    env_file:
+      - ./config/config.env
+    volumes:
+      - ./config/lslidar_cx.yaml:/ros_ws/src/Lslidar_ROS2_driver/lslidar_driver/params/lslidar_cx.yaml
+      - ./config/lslidar_cx_launch.py:/ros_ws/src/Lslidar_ROS2_driver/lslidar_driver/launch/lslidar_cx_launch.py
+    command: ros2 launch lslidar_driver lslidar_cx_launch.py
